@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent System Patterns: Visual Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .pattern-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .description {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        .use-cases {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .use-cases h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .use-cases ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .use-cases li {
+            margin-bottom: 5px;
+        }
+        
+        svg {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+        
+        .intro {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .intro h2 {
+            color: white;
+            border: none;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multi-Agent System Patterns: Visual Guide</h1>
+    
+    <div class="intro">
+        <h2>Essential Patterns for Building AI Agent Systems</h2>
+        <p>This guide explains the eight fundamental patterns you'll need to build your multi-agent system, starting from a simple chatbot and scaling to complex agent orchestration.</p>
+    </div>
+
+    <!-- Pattern 1: Basic Chatbot -->
+    <div class="pattern-section">
+        <h2>1. Basic Chatbot with Memory</h2>
+        <div class="description">
+            The foundation of any conversational AI system. This pattern maintains a continuous conversation by storing message history and using it as context for generating responses. Each message flows through the system in a loop, with the chat history growing over time.
+        </div>
+        
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Chat Node -->
+            <rect x="300" y="150" width="200" height="80" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="400" y="195" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Chat Node</text>
+            
+            <!-- Storage -->
+            <rect x="100" y="280" width="150" height="60" rx="5" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="175" y="315" text-anchor="middle" fill="white" font-size="14">Chat History</text>
+            
+            <!-- User Input -->
+            <circle cx="150" cy="190" r="40" fill="#e74c3c"/>
+            <text x="150" y="195" text-anchor="middle" fill="white" font-size="14">User</text>
+            
+            <!-- Response -->
+            <circle cx="650" cy="190" r="40" fill="#27ae60"/>
+            <text x="650" y="195" text-anchor="middle" fill="white" font-size="14">Response</text>
+            
+            <!-- Arrows -->
+            <path d="M 190 190 L 300 190" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <path d="M 500 190 L 610 190" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <path d="M 400 230 L 400 260 L 250 260 L 250 310" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+            <path d="M 100 310 L 50 310 L 50 100 L 400 100 L 400 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+            
+            <!-- Loop indicator -->
+            <text x="50" y="90" fill="#34495e" font-size="12" font-style="italic">Loop back for next message</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Customer service chatbots</li>
+                <li>Personal assistants</li>
+                <li>Interactive help systems</li>
+                <li>Conversational interfaces for any application</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 2: RAG -->
+    <div class="pattern-section">
+        <h2>2. RAG (Retrieval-Augmented Generation)</h2>
+        <div class="description">
+            RAG enhances AI responses by first searching through a knowledge base to find relevant information, then using that context to generate accurate, grounded answers. Think of it as giving your AI access to a library - it looks up relevant books before answering questions.
+        </div>
+        
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- User Query -->
+            <circle cx="100" cy="250" r="40" fill="#e74c3c"/>
+            <text x="100" y="255" text-anchor="middle" fill="white" font-size="14">Query</text>
+            
+            <!-- Vector Store -->
+            <rect x="250" y="100" width="150" height="80" rx="10" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="325" y="145" text-anchor="middle" fill="white" font-size="16">Vector Store</text>
+            
+            <!-- Document DB -->
+            <rect x="250" y="320" width="150" height="80" rx="10" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="325" y="365" text-anchor="middle" fill="white" font-size="16">Documents</text>
+            
+            <!-- Retrieve Node -->
+            <rect x="450" y="210" width="120" height="80" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="510" y="255" text-anchor="middle" fill="white" font-size="16">Retrieve</text>
+            
+            <!-- Generate Node -->
+            <rect x="620" y="210" width="120" height="80" rx="10" fill="#27ae60" stroke="#2c3e50" stroke-width="2"/>
+            <text x="680" y="255" text-anchor="middle" fill="white" font-size="16">Generate</text>
+            
+            <!-- Arrows -->
+            <path d="M 140 250 L 250 250 L 250 180" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead2)"/>
+            <path d="M 400 140 L 450 140 L 450 210" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead2)"/>
+            <path d="M 325 320 L 325 290 L 450 290" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead2)" stroke-dasharray="5,5"/>
+            <path d="M 570 250 L 620 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead2)"/>
+            
+            <!-- Labels -->
+            <text x="180" y="220" fill="#34495e" font-size="12">1. Search</text>
+            <text x="420" y="170" fill="#34495e" font-size="12">2. Find similar</text>
+            <text x="370" y="305" fill="#34495e" font-size="12">3. Get docs</text>
+            <text x="585" y="240" fill="#34495e" font-size="12">4. Use context</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Knowledge base Q&A systems</li>
+                <li>Document-based chat assistants</li>
+                <li>Technical support with product documentation</li>
+                <li>Research assistants with access to papers/articles</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 3: Chain of Thought -->
+    <div class="pattern-section">
+        <h2>3. Chain-of-Thought (CoT)</h2>
+        <div class="description">
+            Chain-of-Thought breaks complex problems into step-by-step reasoning. The system thinks through each step, building on previous thoughts until reaching a conclusion. Like showing your work in math class, this pattern makes AI reasoning transparent and more accurate.
+        </div>
+        
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Question -->
+            <circle cx="100" cy="200" r="40" fill="#e74c3c"/>
+            <text x="100" y="205" text-anchor="middle" fill="white" font-size="14">Question</text>
+            
+            <!-- Think Node -->
+            <rect x="250" y="160" width="200" height="80" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="350" y="205" text-anchor="middle" fill="white" font-size="16">Think Step</text>
+            
+            <!-- Thought Storage -->
+            <rect x="300" y="50" width="100" height="60" rx="5" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="350" y="85" text-anchor="middle" fill="white" font-size="12">Thoughts</text>
+            
+            <!-- Answer Node -->
+            <rect x="550" y="160" width="150" height="80" rx="10" fill="#27ae60" stroke="#2c3e50" stroke-width="2"/>
+            <text x="625" y="205" text-anchor="middle" fill="white" font-size="16">Answer</text>
+            
+            <!-- Arrows -->
+            <path d="M 140 200 L 250 200" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead3)"/>
+            <path d="M 350 160 L 350 110" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead3)" stroke-dasharray="5,5"/>
+            
+            <!-- Loop -->
+            <path d="M 450 220 Q 500 300 350 300 Q 200 300 250 220" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrowhead3)" stroke-dasharray="3,3"/>
+            <text x="350" y="320" text-anchor="middle" fill="#e74c3c" font-size="12" font-style="italic">Continue thinking</text>
+            
+            <!-- To Answer -->
+            <path d="M 450 200 L 550 200" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowhead3)"/>
+            <text x="500" y="190" text-anchor="middle" fill="#27ae60" font-size="12">Conclude</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Mathematical problem solving</li>
+                <li>Complex reasoning tasks</li>
+                <li>Decision-making processes</li>
+                <li>Analytical reports requiring step-by-step logic</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 4: Map-Reduce -->
+    <div class="pattern-section">
+        <h2>4. Map-Reduce</h2>
+        <div class="description">
+            Map-Reduce splits large tasks into smaller chunks, processes them in parallel, then combines the results. Imagine having 100 emails to summarize - instead of doing them one by one, you give 25 to each of 4 assistants, then merge their summaries.
+        </div>
+        
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Input -->
+            <rect x="50" y="200" width="100" height="100" rx="10" fill="#e74c3c" stroke="#2c3e50" stroke-width="2"/>
+            <text x="100" y="255" text-anchor="middle" fill="white" font-size="14">Big Task</text>
+            
+            <!-- Map Node -->
+            <rect x="200" y="225" width="100" height="50" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="250" y="255" text-anchor="middle" fill="white" font-size="14">Map</text>
+            
+            <!-- Chunks -->
+            <rect x="350" y="100" width="80" height="40" rx="5" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="390" y="125" text-anchor="middle" fill="white" font-size="12">Chunk 1</text>
+            
+            <rect x="350" y="180" width="80" height="40" rx="5" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="390" y="205" text-anchor="middle" fill="white" font-size="12">Chunk 2</text>
+            
+            <rect x="350" y="260" width="80" height="40" rx="5" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="390" y="285" text-anchor="middle" fill="white" font-size="12">Chunk 3</text>
+            
+            <rect x="350" y="340" width="80" height="40" rx="5" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="390" y="365" text-anchor="middle" fill="white" font-size="12">Chunk 4</text>
+            
+            <!-- Reduce Node -->
+            <rect x="500" y="225" width="100" height="50" rx="10" fill="#e67e22" stroke="#2c3e50" stroke-width="2"/>
+            <text x="550" y="255" text-anchor="middle" fill="white" font-size="14">Reduce</text>
+            
+            <!-- Output -->
+            <rect x="650" y="200" width="100" height="100" rx="10" fill="#27ae60" stroke="#2c3e50" stroke-width="2"/>
+            <text x="700" y="255" text-anchor="middle" fill="white" font-size="14">Result</text>
+            
+            <!-- Arrows -->
+            <path d="M 150 250 L 200 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            
+            <!-- Map arrows -->
+            <path d="M 300 250 L 350 120" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 300 250 L 350 200" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 300 250 L 350 280" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 300 250 L 350 360" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            
+            <!-- Reduce arrows -->
+            <path d="M 430 120 L 500 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 430 200 L 500 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 430 280 L 500 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            <path d="M 430 360 L 500 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            
+            <path d="M 600 250 L 650 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead4)"/>
+            
+            <!-- Parallel indicator -->
+            <text x="390" y="420" text-anchor="middle" fill="#34495e" font-size="12" font-style="italic">Parallel Processing</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead4" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Batch email processing</li>
+                <li>Large document analysis</li>
+                <li>Data aggregation tasks</li>
+                <li>Parallel content generation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 5: Workflow (Directed Path) -->
+    <div class="pattern-section">
+        <h2>5. Workflow (Directed Path)</h2>
+        <div class="description">
+            A workflow chains multiple steps in a specific order, where each step depends on the previous one. Like an assembly line, data flows through each stage, being transformed along the way. Perfect for multi-step processes with clear dependencies.
+        </div>
+        
+        <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Input -->
+            <circle cx="100" cy="150" r="40" fill="#e74c3c"/>
+            <text x="100" y="155" text-anchor="middle" fill="white" font-size="14">Email</text>
+            
+            <!-- Step 1 -->
+            <rect x="200" y="110" width="120" height="80" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="260" y="145" text-anchor="middle" fill="white" font-size="14">Summarize</text>
+            <text x="260" y="165" text-anchor="middle" fill="white" font-size="14">Email</text>
+            
+            <!-- Step 2 -->
+            <rect x="370" y="110" width="120" height="80" rx="10" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="430" y="145" text-anchor="middle" fill="white" font-size="14">Draft</text>
+            <text x="430" y="165" text-anchor="middle" fill="white" font-size="14">Reply</text>
+            
+            <!-- Step 3 -->
+            <rect x="540" y="110" width="120" height="80" rx="10" fill="#e67e22" stroke="#2c3e50" stroke-width="2"/>
+            <text x="600" y="145" text-anchor="middle" fill="white" font-size="14">Review &</text>
+            <text x="600" y="165" text-anchor="middle" fill="white" font-size="14">Polish</text>
+            
+            <!-- Output -->
+            <circle cx="720" cy="150" r="40" fill="#27ae60"/>
+            <text x="720" y="155" text-anchor="middle" fill="white" font-size="14">Send</text>
+            
+            <!-- Arrows -->
+            <path d="M 140 150 L 200 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead5)"/>
+            <path d="M 320 150 L 370 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead5)"/>
+            <path d="M 490 150 L 540 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead5)"/>
+            <path d="M 660 150 L 680 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead5)"/>
+            
+            <!-- Data flow indicators -->
+            <text x="260" y="220" text-anchor="middle" fill="#34495e" font-size="11" font-style="italic">Summary</text>
+            <text x="430" y="220" text-anchor="middle" fill="#34495e" font-size="11" font-style="italic">Draft</text>
+            <text x="600" y="220" text-anchor="middle" fill="#34495e" font-size="11" font-style="italic">Final Reply</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead5" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Email processing pipelines</li>
+                <li>Document transformation workflows</li>
+                <li>Content creation pipelines</li>
+                <li>Any multi-step process with clear stages</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 6: Multi-Agent Coordination -->
+    <div class="pattern-section">
+        <h2>6. Multi-Agent Coordination</h2>
+        <div class="description">
+            Multiple specialized agents work together, each handling their area of expertise. They communicate through a shared message system, like a team collaborating on a project. One agent might research, another writes, and a third reviews.
+        </div>
+        
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Message Broker -->
+            <circle cx="400" cy="250" r="80" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+            <text x="400" y="245" text-anchor="middle" fill="white" font-size="16">Message</text>
+            <text x="400" y="265" text-anchor="middle" fill="white" font-size="16">Broker</text>
+            
+            <!-- Agent 1 -->
+            <rect x="100" y="100" width="120" height="60" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="160" y="135" text-anchor="middle" fill="white" font-size="14">Research Agent</text>
+            
+            <!-- Agent 2 -->
+            <rect x="580" y="100" width="120" height="60" rx="10" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="640" y="135" text-anchor="middle" fill="white" font-size="14">Writer Agent</text>
+            
+            <!-- Agent 3 -->
+            <rect x="100" y="340" width="120" height="60" rx="10" fill="#e67e22" stroke="#2c3e50" stroke-width="2"/>
+            <text x="160" y="375" text-anchor="middle" fill="white" font-size="14">Editor Agent</text>
+            
+            <!-- Agent 4 -->
+            <rect x="580" y="340" width="120" height="60" rx="10" fill="#27ae60" stroke="#2c3e50" stroke-width="2"/>
+            <text x="640" y="375" text-anchor="middle" fill="white" font-size="14">QA Agent</text>
+            
+            <!-- Communication lines -->
+            <path d="M 220 160 L 340 210" stroke="#34495e" stroke-width="2" stroke-dasharray="5,5"/>
+            <path d="M 460 210 L 580 160" stroke="#34495e" stroke-width="2" stroke-dasharray="5,5"/>
+            <path d="M 220 340 L 340 290" stroke="#34495e" stroke-width="2" stroke-dasharray="5,5"/>
+            <path d="M 460 290 L 580 340" stroke="#34495e" stroke-width="2" stroke-dasharray="5,5"/>
+            
+            <!-- Pub/Sub indicators -->
+            <text x="280" y="180" text-anchor="middle" fill="#34495e" font-size="11">publish</text>
+            <text x="520" y="180" text-anchor="middle" fill="#34495e" font-size="11">subscribe</text>
+            <text x="280" y="330" text-anchor="middle" fill="#34495e" font-size="11">subscribe</text>
+            <text x="520" y="330" text-anchor="middle" fill="#34495e" font-size="11">publish</text>
+            
+            <!-- Topic channels -->
+            <text x="400" y="150" text-anchor="middle" fill="#95a5a6" font-size="12" font-style="italic">Topics:</text>
+            <text x="400" y="170" text-anchor="middle" fill="#95a5a6" font-size="11">• research-complete</text>
+            <text x="400" y="185" text-anchor="middle" fill="#95a5a6" font-size="11">• draft-ready</text>
+            <text x="400" y="200" text-anchor="middle" fill="#95a5a6" font-size="11">• review-needed</text>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Complex projects requiring multiple specializations</li>
+                <li>Collaborative content creation</li>
+                <li>Research and analysis teams</li>
+                <li>Quality assurance workflows</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 7: Supervisor Pattern -->
+    <div class="pattern-section">
+        <h2>7. Supervisor Pattern</h2>
+        <div class="description">
+            A supervisor agent manages and coordinates other agents, assigning tasks based on their capabilities and monitoring progress. Like a project manager, it breaks down complex goals into subtasks and ensures everything comes together properly.
+        </div>
+        
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Supervisor -->
+            <rect x="300" y="50" width="200" height="80" rx="10" fill="#e74c3c" stroke="#2c3e50" stroke-width="2"/>
+            <text x="400" y="85" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Supervisor</text>
+            <text x="400" y="105" text-anchor="middle" fill="white" font-size="12">Plans & Monitors</text>
+            
+            <!-- Task Input -->
+            <circle cx="100" cy="90" r="40" fill="#34495e"/>
+            <text x="100" y="95" text-anchor="middle" fill="white" font-size="14">Task</text>
+            
+            <!-- Worker 1 -->
+            <rect x="150" y="250" width="120" height="60" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="210" y="285" text-anchor="middle" fill="white" font-size="14">Worker 1</text>
+            
+            <!-- Worker 2 -->
+            <rect x="340" y="250" width="120" height="60" rx="10" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="400" y="285" text-anchor="middle" fill="white" font-size="14">Worker 2</text>
+            
+            <!-- Worker 3 -->
+            <rect x="530" y="250" width="120" height="60" rx="10" fill="#e67e22" stroke="#2c3e50" stroke-width="2"/>
+            <text x="590" y="285" text-anchor="middle" fill="white" font-size="14">Worker 3</text>
+            
+            <!-- Result -->
+            <circle cx="700" cy="90" r="40" fill="#27ae60"/>
+            <text x="700" y="95" text-anchor="middle" fill="white" font-size="14">Result</text>
+            
+            <!-- Assignment arrows -->
+            <path d="M 140 90 L 300 90" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead7)"/>
+            <path d="M 350 130 L 210 250" stroke="#3498db" stroke-width="2" marker-end="url(#arrowhead7)"/>
+            <path d="M 400 130 L 400 250" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrowhead7)"/>
+            <path d="M 450 130 L 590 250" stroke="#e67e22" stroke-width="2" marker-end="url(#arrowhead7)"/>
+            
+            <!-- Report back arrows -->
+            <path d="M 210 310 L 350 430 L 400 430" stroke="#3498db" stroke-width="2" marker-end="url(#arrowhead7)" stroke-dasharray="5,5"/>
+            <path d="M 400 310 L 400 430" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrowhead7)" stroke-dasharray="5,5"/>
+            <path d="M 590 310 L 450 430 L 400 430" stroke="#e67e22" stroke-width="2" marker-end="url(#arrowhead7)" stroke-dasharray="5,5"/>
+            
+            <!-- Review and combine -->
+            <rect x="350" y="400" width="100" height="60" rx="5" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="400" y="435" text-anchor="middle" fill="white" font-size="12">Review</text>
+            
+            <path d="M 500 90 L 660 90" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead7)"/>
+            
+            <!-- Labels -->
+            <text x="220" y="45" text-anchor="middle" fill="#34495e" font-size="11">1. Receive task</text>
+            <text x="250" y="200" text-anchor="middle" fill="#34495e" font-size="11">2. Assign</text>
+            <text x="150" y="350" text-anchor="middle" fill="#34495e" font-size="11">3. Report</text>
+            <text x="580" y="45" text-anchor="middle" fill="#34495e" font-size="11">4. Deliver</text>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead7" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Complex projects requiring task decomposition</li>
+                <li>Quality control and review processes</li>
+                <li>Hierarchical decision-making</li>
+                <li>Resource allocation and management</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pattern 8: Branching/Conditional Flow -->
+    <div class="pattern-section">
+        <h2>8. Branching (Conditional Flow)</h2>
+        <div class="description">
+            Branching allows the system to make decisions and follow different paths based on conditions. Like a flowchart with if-then logic, it routes processing through different branches depending on the data or results at each step.
+        </div>
+        
+        <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Input -->
+            <circle cx="100" cy="250" r="40" fill="#34495e"/>
+            <text x="100" y="255" text-anchor="middle" fill="white" font-size="14">Email</text>
+            
+            <!-- Classifier -->
+            <rect x="200" y="210" width="120" height="80" rx="10" fill="#3498db" stroke="#2c3e50" stroke-width="2"/>
+            <text x="260" y="245" text-anchor="middle" fill="white" font-size="14">Classify</text>
+            <text x="260" y="265" text-anchor="middle" fill="white" font-size="14">Email</text>
+            
+            <!-- Decision Diamond -->
+            <path d="M 400 250 L 450 200 L 500 250 L 450 300 Z" fill="#e74c3c" stroke="#2c3e50" stroke-width="2"/>
+            <text x="450" y="255" text-anchor="middle" fill="white" font-size="12">Type?</text>
+            
+            <!-- Branch 1: Customer -->
+            <rect x="550" y="100" width="120" height="60" rx="10" fill="#27ae60" stroke="#2c3e50" stroke-width="2"/>
+            <text x="610" y="135" text-anchor="middle" fill="white" font-size="13">Customer</text>
+            <text x="610" y="150" text-anchor="middle" fill="white" font-size="13">Support</text>
+            
+            <!-- Branch 2: Sales -->
+            <rect x="550" y="220" width="120" height="60" rx="10" fill="#9b59b6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="610" y="255" text-anchor="middle" fill="white" font-size="13">Sales Team</text>
+            
+            <!-- Branch 3: Spam -->
+            <rect x="550" y="340" width="120" height="60" rx="10" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+            <text x="610" y="375" text-anchor="middle" fill="white" font-size="13">Archive</text>
+            
+            <!-- Arrows -->
+            <path d="M 140 250 L 200 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead8)"/>
+            <path d="M 320 250 L 400 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead8)"/>
+            
+            <!-- Branch arrows -->
+            <path d="M 475 225 L 550 130" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowhead8)"/>
+            <path d="M 500 250 L 550 250" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrowhead8)"/>
+            <path d="M 475 275 L 550 370" stroke="#95a5a6" stroke-width="2" marker-end="url(#arrowhead8)"/>
+            
+            <!-- Labels -->
+            <text x="500" y="170" fill="#27ae60" font-size="11">support</text>
+            <text x="520" y="240" fill="#9b59b6" font-size="11">sales</text>
+            <text x="500" y="330" fill="#95a5a6" font-size="11">spam</text>
+            
+            <!-- Merge point -->
+            <circle cx="720" cy="250" r="30" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+            <text x="720" y="255" text-anchor="middle" fill="white" font-size="12">Done</text>
+            
+            <!-- Merge arrows -->
+            <path d="M 670 130 L 700 230" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead8)" stroke-dasharray="3,3"/>
+            <path d="M 670 250 L 690 250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead8)" stroke-dasharray="3,3"/>
+            <path d="M 670 370 L 700 270" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead8)" stroke-dasharray="3,3"/>
+            
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arrowhead8" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                </marker>
+            </defs>
+        </svg>
+        
+        <div class="use-cases">
+            <h3>When to Use:</h3>
+            <ul>
+                <li>Email routing and classification</li>
+                <li>Content moderation with different severity levels</li>
+                <li>A/B testing different processing paths</li>
+                <li>Error handling and retry logic</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="pattern-section" style="background: #ecf0f1;">
+        <h2>Getting Started</h2>
+        <div class="description">
+            <p><strong>Start with Pattern 1 (Basic Chatbot)</strong> as your MVP. This gives you a working system quickly.</p>
+            
+            <p><strong>Add Pattern 2 (RAG)</strong> when you need the chatbot to access specific knowledge or documents.</p>
+            
+            <p><strong>Implement Patterns 3-5</strong> as you need more sophisticated processing:</p>
+            <ul>
+                <li>Chain-of-Thought for complex reasoning</li>
+                <li>Map-Reduce for batch processing</li>
+                <li>Workflows for multi-step processes</li>
+            </ul>
+            
+            <p><strong>Scale with Patterns 6-8</strong> when you need true multi-agent capabilities:</p>
+            <ul>
+                <li>Multi-Agent Coordination for specialized teams</li>
+                <li>Supervisor Pattern for hierarchical control</li>
+                <li>Branching for dynamic routing</li>
+            </ul>
+            
+            <p>Each pattern builds on the graph-based architecture, making it easy to combine them as your system grows.</p>
+        </div>
+    </div>
+
+</body>
+</html>
